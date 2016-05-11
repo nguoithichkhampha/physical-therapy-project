@@ -8,7 +8,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
 using Leap;
-
+using Emotiv;
 /**
 * The Controller object that instantiates hands and tools to represent the hands and tools tracked
 * by the Leap Motion device.
@@ -87,6 +87,7 @@ public class HandController : MonoBehaviour {
   private int current_index_action = 0;
 
   private Dropdown menu;
+  private Text training_status;
   /** The list of all hand graphic objects owned by this HandController.*/
   protected Dictionary<int, HandModel> hand_graphics_;
   /** The list of all hand physics objects owned by this HandController.*/
@@ -125,12 +126,19 @@ public class HandController : MonoBehaviour {
   void Awake() {
     leap_controller_ = new Controller();
 	engine_contrller_ = new EmoEngineController ();
+	engine_contrller_.SetupDelegate (this);
   }
 
   /** Initalizes the hand and tool lists and recording, if enabled.*/
   void Start() {
     // Initialize hand lookup tables.
 	menu = GameObject.Find("UIControl").GetComponentInChildren<Dropdown>();
+		Text[] list_text = GameObject.Find("UIControl").GetComponentsInChildren<Text>();
+		for (int i = 0; i < list_text.Length; i++)
+			if (list_text [i].name == "Training Status") {
+				training_status = list_text [i];
+				break;
+			}
     hand_graphics_ = new Dictionary<int, HandModel>();
     hand_physics_ = new Dictionary<int, HandModel>();
 
@@ -492,8 +500,75 @@ public class HandController : MonoBehaviour {
 
 	public void ClickStartTraining()
 	{
-		engine_contrller_.TrainingAction (current_index_action);
+		Debug.LogWarning ("click start ");
+		if (current_index_action == 1) {
+			if (engine_contrller_.isTrainingNeutral ()) {
+				engine_contrller_.TrainingAction (current_index_action);
+				PlayRecording ();
+			} else {
+				training_status.text = "Training Status: Training Neutral First";
+			}
+		}
+		else
+			engine_contrller_.TrainingAction (current_index_action);
+	}
+
+	public void engine_MentalCommandTrainingStarted(object sender, EmoEngineEventArgs e)
+	{
+		Debug.LogWarning ("Start Training");
+		training_status.text = "Training Status: Training Started";
+	}
+
+	public void engine_MentalCommandTrainingSucceeded(object sender, EmoEngineEventArgs e)
+	{
+		Debug.LogWarning ("Start Succeeded");
+		training_status.text = "Training Status: Training Succeeded";
 		if (current_index_action == 1)
+			StopRecording ();
+		engine_contrller_.isAcceptTraining (true);
+	}
+
+	public void engine_MentalCommandTrainingFailed(object sender, EmoEngineEventArgs e)
+	{
+		Debug.LogWarning ("Start Failed");
+		training_status.text = "Training Status: Training Failed";
+		if (current_index_action == 1)
+			StopRecording ();
+	}
+
+	public void engine_MentalCommandTrainingCompleted(object sender, EmoEngineEventArgs e)
+	{
+		Debug.LogWarning ("Start Completed");
+		training_status.text = "Training Status: Training Completed";
+	}
+
+	public void engine_MentalCommandTrainingRejected(object sender, EmoEngineEventArgs e)
+	{
+
+	}
+
+	public void engine_MentalCommandTrainingErased(object sender, EmoEngineEventArgs e)
+	{
+		Debug.LogWarning ("Start Erased");
+		training_status.text = "Training Status: Training Erased";
+	}
+
+	public void engine_MentalCommandTrainingReset(object sender, EmoEngineEventArgs e)
+	{
+		Debug.LogWarning ("Start Reseted");
+		training_status.text = "Training Status: Training Reseted";
+	}
+
+	public void engine_MentalCommandEmoStateUpdated(object sender, EmoStateUpdatedEventArgs e)
+	{
+		EmoState es = e.emoState;
+
+		EdkDll.IEE_MentalCommandAction_t cogAction = es.MentalCommandGetCurrentAction();
+		float power = es.MentalCommandGetCurrentActionPower();
+		if (cogAction == EdkDll.IEE_MentalCommandAction_t.MC_PUSH && power >= 0.3f)
 			PlayRecording ();
+		else
+			StopRecording ();
+
 	}
 }

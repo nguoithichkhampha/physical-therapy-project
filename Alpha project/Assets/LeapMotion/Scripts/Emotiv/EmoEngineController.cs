@@ -13,7 +13,10 @@ public class EmoEngineController
 	public EmoEngineController()
 	{
 		EmoEngine engine = EmoEngine.Instance;
+	}
 
+	public void SetupDelegate (HandController _handcontroller)
+	{
 		engine.EmoEngineConnected +=
 			new EmoEngine.EmoEngineConnectedEventHandler(engine_EmoEngineConnected);
 		engine.EmoEngineDisconnected +=
@@ -27,22 +30,21 @@ public class EmoEngineController
 
 		/*For mental command detection*/
 		engine.MentalCommandTrainingCompleted += 
-			new EmoEngine.MentalCommandTrainingCompletedEventHandler (engine_MentalCommandTrainingCompleted);
+			new EmoEngine.MentalCommandTrainingCompletedEventHandler (_handcontroller.engine_MentalCommandTrainingCompleted);
 		engine.MentalCommandTrainingRejected +=
-			new EmoEngine.MentalCommandTrainingRejectedEventHandler (engine_MentalCommandTrainingRejected);
+			new EmoEngine.MentalCommandTrainingRejectedEventHandler (_handcontroller.engine_MentalCommandTrainingRejected);
 		engine.MentalCommandTrainingReset +=
-			new EmoEngine.MentalCommandTrainingResetEventHandler (engine_MentalCommandTrainingReset);
+			new EmoEngine.MentalCommandTrainingResetEventHandler (_handcontroller.engine_MentalCommandTrainingReset);
 		engine.MentalCommandTrainingStarted +=
-			new EmoEngine.MentalCommandTrainingStartedEventEventHandler (engine_MentalCommandTrainingStarted);
+			new EmoEngine.MentalCommandTrainingStartedEventEventHandler (_handcontroller.engine_MentalCommandTrainingStarted);
 		engine.MentalCommandTrainingSucceeded +=
-			new EmoEngine.MentalCommandTrainingSucceededEventHandler (engine_MentalCommandTrainingSucceeded);
+			new EmoEngine.MentalCommandTrainingSucceededEventHandler (_handcontroller.engine_MentalCommandTrainingSucceeded);
 		engine.MentalCommandTrainingFailed +=
-			new EmoEngine.MentalCommandTrainingFailedEventHandler (engine_MentalCommandTrainingFailed);
+			new EmoEngine.MentalCommandTrainingFailedEventHandler (_handcontroller.engine_MentalCommandTrainingFailed);
 		engine.MentalCommandTrainingDataErased +=
-			new EmoEngine.MentalCommandTrainingDataErasedEventHandler (engine_MentalCommandTrainingErased);
+			new EmoEngine.MentalCommandTrainingDataErasedEventHandler (_handcontroller.engine_MentalCommandTrainingErased);
 		engine.MentalCommandEmoStateUpdated +=
-			new EmoEngine.MentalCommandEmoStateUpdatedEventHandler (engine_MentalCommandEmoStateUpdated);
-		
+			new EmoEngine.MentalCommandEmoStateUpdatedEventHandler (_handcontroller.engine_MentalCommandEmoStateUpdated);
 	}
 
 	static void engine_EmoEngineConnected(object sender, EmoEngineEventArgs e)
@@ -69,46 +71,6 @@ public class EmoEngineController
 
 	}  
 
-	static void engine_MentalCommandTrainingStarted(object sender, EmoEngineEventArgs e)
-	{
-		
-	}
-
-	static void engine_MentalCommandTrainingSucceeded(object sender, EmoEngineEventArgs e)
-	{
-		
-	}
-
-	static void engine_MentalCommandTrainingFailed(object sender, EmoEngineEventArgs e)
-	{
-
-	}
-
-	static void engine_MentalCommandTrainingCompleted(object sender, EmoEngineEventArgs e)
-	{
-		
-	}
-
-	static void engine_MentalCommandTrainingRejected(object sender, EmoEngineEventArgs e)
-	{
-		
-	}
-
-	static void engine_MentalCommandTrainingErased(object sender, EmoEngineEventArgs e)
-	{
-
-	}
-
-	static void engine_MentalCommandTrainingReset(object sender, EmoEngineEventArgs e)
-	{
-
-	}
-
-	static void engine_MentalCommandEmoStateUpdated(object sender, EmoStateUpdatedEventArgs e)
-	{
-		
-	}
-
 	public void ConnectEngine()
 	{
 	    engine.Connect ();
@@ -122,9 +84,23 @@ public class EmoEngineController
 	public void TrainingAction(int index_action)
 	{
 		if (list_action[index_action] != EdkDll.IEE_MentalCommandAction_t.MC_NEUTRAL)
-			EdkDll.IEE_MentalCommandSetActiveActions (0, (uint)list_action[index_action]);
-		EdkDll.IEE_MentalCommandSetTrainingAction (0, list_action[index_action]);
-		EdkDll.IEE_MentalCommandSetTrainingControl (0, EdkDll.IEE_MentalCommandTrainingControl_t.MC_START);
+			engine.MentalCommandSetActiveActions ((uint)0, (uint)list_action[index_action]);
+		engine.MentalCommandSetTrainingAction ((uint)0, list_action[index_action]);
+		engine.MentalCommandSetTrainingControl (0, EdkDll.IEE_MentalCommandTrainingControl_t.MC_START);
+	}
+
+	public void isAcceptTraining(bool value)
+	{
+		if(value)
+			engine.MentalCommandSetTrainingControl (0, EdkDll.IEE_MentalCommandTrainingControl_t.MC_ACCEPT);
+		else
+			engine.MentalCommandSetTrainingControl (0, EdkDll.IEE_MentalCommandTrainingControl_t.MC_REJECT);
+	}
+
+	public bool isTrainingNeutral()
+	{
+		uint trained_action = engine.MentalCommandGetTrainedSignatureActions (0);
+		return (((trained_action) & (uint)EdkDll.IEE_MentalCommandAction_t.MC_NEUTRAL) != 0);
 	}
 		
 }
