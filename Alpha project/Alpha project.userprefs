@@ -1,15 +1,17 @@
 ﻿<Properties StartupItem="Assembly-CSharp.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/LeapMotion/Scripts/Emotiv/EmoEngineController.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/LeapMotion/Scripts/Emotiv/EmoEngine.cs">
     <Files>
-      <File FileName="Assets/LeapMotion/Scripts/Emotiv/EdkDll.cs" Line="580" Column="46" />
-      <File FileName="Assets/LeapMotion/Scripts/Emotiv/EmoEngineController.cs" Line="44" Column="110" />
+      <File FileName="Assets/LeapMotion/Scripts/HandController.cs" Line="360" Column="32" />
+      <File FileName="Assets/LeapMotion/Scripts/Emotiv/Contact Quality/ContactQualityUIControl.cs" Line="34" Column="4" />
+      <File FileName="Assets/LeapMotion/Scripts/Emotiv/EdkDll.cs" Line="1" Column="1" />
+      <File FileName="Assets/LeapMotion/Scripts/Emotiv/EmoEngineController.cs" Line="90" Column="23" />
       <File FileName="Assets/LeapMotion/Scripts/LeapDeviceInfo.cs" Line="1" Column="1" />
       <File FileName="Assets/LeapMotion/Scripts/Hands/HandModel.cs" Line="1" Column="1" />
       <File FileName="Assets/LeapMotion/Scripts/Hands/RiggedHand.cs" Line="1" Column="1" />
       <File FileName="Assets/LeapMotion/Scripts/Emotiv/EmoState.cs" Line="1" Column="1" />
-      <File FileName="Assets/LeapMotion/Scripts/Emotiv/EmoEngine.cs" Line="59" Column="5" />
-      <File FileName="Assets/LeapMotion/Scripts/HandController.cs" Line="504" Column="3" />
+      <File FileName="Assets/LeapMotion/Scripts/Emotiv/EmoEngine.cs" Line="418" Column="9" />
+      <File FileName="Assets/LeapMotion/Scripts/Emotiv/UnityConsole.cs" Line="13" Column="33" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

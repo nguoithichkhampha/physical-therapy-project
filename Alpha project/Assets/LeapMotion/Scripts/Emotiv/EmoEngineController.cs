@@ -4,7 +4,8 @@ using Emotiv;
 
 public class EmoEngineController
 {
-	EmoEngine engine = EmoEngine.Instance; 
+	EmoEngine engine; 
+	ContactQualityUIControl contact_quality;
 	EdkDll.IEE_MentalCommandAction_t[] list_action =
 		{
 		EdkDll.IEE_MentalCommandAction_t.MC_NEUTRAL,
@@ -12,7 +13,7 @@ public class EmoEngineController
 		};
 	public EmoEngineController()
 	{
-		EmoEngine engine = EmoEngine.Instance;
+	  engine = EmoEngine.Instance;
 	}
 
 	public void SetupDelegate (HandController _handcontroller)
@@ -47,29 +48,37 @@ public class EmoEngineController
 			new EmoEngine.MentalCommandEmoStateUpdatedEventHandler (_handcontroller.engine_MentalCommandEmoStateUpdated);
 	}
 
-	static void engine_EmoEngineConnected(object sender, EmoEngineEventArgs e)
+    void engine_EmoEngineConnected(object sender, EmoEngineEventArgs e)
 	{
 		Debug.LogWarning ("Engine Connected");
 	}
 
-	static void engine_EmoEngineDisconnected(object sender, EmoEngineEventArgs e)
+    void engine_EmoEngineDisconnected(object sender, EmoEngineEventArgs e)
 	{
-		
+		Debug.LogWarning ("Engine DisConnected");
 	}
-	static void engine_UserAdded(object sender, EmoEngineEventArgs e)
+    void engine_UserAdded(object sender, EmoEngineEventArgs e)
 	{
 		Debug.LogWarning ("User Added");
 	}
-	static void engine_UserRemoved(object sender, EmoEngineEventArgs e)
+    void engine_UserRemoved(object sender, EmoEngineEventArgs e)
 	{
 		Debug.LogWarning ("User Removed");
 	}
 
-	static void engine_EmoStateUpdated(object sender, EmoStateUpdatedEventArgs e)
+    void engine_EmoStateUpdated(object sender, EmoStateUpdatedEventArgs e)
 	{
 		EmoState es = e.emoState;
-
+		EdkDll.IEE_EEG_ContactQuality_t[] value = es.GetContactQualityFromAllChannels ();
+//		for (int i = 0; i < value.Length; i++)
+//			Debug.LogWarning ("contact quality " + value [i]);
+		contact_quality.setColor (value);
 	}  
+
+	public void InitContactQualityUI()
+	{
+		contact_quality = ContactQualityUIControl.Instance;
+	}
 
 	public void ConnectEngine()
 	{

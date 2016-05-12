@@ -433,8 +433,12 @@ namespace Emotiv
                 EdkDll.IEE_Event_t eventType = EdkDll.IEE_EmoEngineEventGetType(hEvent);
                 switch (eventType)
                 {
-                    case EdkDll.IEE_Event_t.IEE_UserAdded:
-                        OnUserAdded(args);
+				case EdkDll.IEE_Event_t.IEE_UserAdded:
+					{
+						OnUserAdded (args);
+//						UnityConsole.Redirect ();
+//						Console.WriteLine ("Event User Added");
+					}
                         break;
                     case EdkDll.IEE_Event_t.IEE_UserRemoved:
                         OnUserRemoved(args);

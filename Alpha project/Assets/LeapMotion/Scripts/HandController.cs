@@ -150,6 +150,7 @@ public class HandController : MonoBehaviour {
     }
     
 	if (engine_contrller_ != null) {
+	  engine_contrller_.InitContactQualityUI ();
 	  engine_contrller_.ConnectEngine ();
 	}
 
@@ -570,5 +571,9 @@ public class HandController : MonoBehaviour {
 		else
 			StopRecording ();
 
+	}
+
+	void OnApplicationQuit(){
+		EmoEngine.Instance.Disconnect();
 	}
 }

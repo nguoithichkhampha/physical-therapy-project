@@ -73,10 +73,12 @@
      <Compile Include="Assets\LeapMotion\DemoResources\Scripts\ResetCollisionsOnBreak.cs" />
      <Compile Include="Assets\LeapMotion\DemoResources\Scripts\StemMesh.cs" />
      <Compile Include="Assets\LeapMotion\DemoResources\Scripts\VoxelSheet.cs" />
+     <Compile Include="Assets\LeapMotion\Scripts\Emotiv\Contact Quality\ContactQualityUIControl.cs" />
      <Compile Include="Assets\LeapMotion\Scripts\Emotiv\EdkDll.cs" />
      <Compile Include="Assets\LeapMotion\Scripts\Emotiv\EmoEngine.cs" />
      <Compile Include="Assets\LeapMotion\Scripts\Emotiv\EmoEngineController.cs" />
      <Compile Include="Assets\LeapMotion\Scripts\Emotiv\EmoState.cs" />
+     <Compile Include="Assets\LeapMotion\Scripts\Emotiv\UnityConsole.cs" />
      <Compile Include="Assets\LeapMotion\Scripts\HandController.cs" />
      <Compile Include="Assets\LeapMotion\Scripts\Hands\DebugFinger.cs" />
      <Compile Include="Assets\LeapMotion\Scripts\Hands\DebugHand.cs" />
